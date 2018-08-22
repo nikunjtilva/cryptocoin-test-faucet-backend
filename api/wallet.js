@@ -24,10 +24,28 @@ export const balance =  (event, context, callback) => {
 
 export const sendCoin = (event,context,callback) => {
     const coinType = event.pathParameters.cointype;
+    const receiversWalletAddress = event.pathParameters.walletaddress;
+    const unitsToTransfer = event.pathParameters.amount;
     const coinProps = COIN_MAP[coinType];
     
     //validate input for bad request or not supported coins
     validateInputs(coinType, callback);
+    
+    bitgo.getWalletByAddress(coinType, coinProps.address)
+        .then((wallet) => {
+            const transactionInfo = {
+                amount: unitsToTransfer,
+                address: receiversWalletAddress,
+                walletPassphrase:process.env.WALLET_PASS_PHRASE
+            }
+            wallet.send(transactionInfo).then((transaction)=>{
+                callback(null,formatResponse(STATUS_CODE.OK,transaction));
+            },(error)=>{
+                callback(null,formatResponse(STATUS_CODE.SERVER_ERROR,error));
+            })
+        }, (error) => {
+            callback(null, formatResponse(STATUS_CODE.SERVER_ERROR, { error: error }))
+        })
 
 }
 
