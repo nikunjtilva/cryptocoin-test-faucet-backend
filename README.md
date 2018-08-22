@@ -11,6 +11,7 @@ This project consists of below microservices
 
 A demo version of these services are hosted on AWS - [`https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/balance/{cointype}`](https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/balance/tbtc)
 
+[`https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/sendcoin/{cointype}/{walletaddress}/{amount}`](https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/sendcoin/tbtc/)
 ### Requirements
 
 - [Install the Serverless Framework](https://serverless.com/framework/docs/providers/aws/guide/installation/)

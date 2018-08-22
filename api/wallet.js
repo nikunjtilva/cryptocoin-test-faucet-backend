@@ -1,11 +1,11 @@
 import * as bitgo from '../config/bitgo'
-import {COIN_MAP,STATUS_CODE} from '../constants'
-export const balance =  (event, context, callback) => {
+import { COIN_MAP, STATUS_CODE } from '../constants'
+export const balance = (event, context, callback) => {
     const coinType = event.pathParameters.cointype;
     const coinProps = COIN_MAP[coinType];
-    
+
     //validate input for bad request or not supported coins
-    validateInputs(coinType, callback);
+    validateCoinType(coinType, callback);
 
     //call bitgo sdk to get wallet data
     bitgo.getWalletByAddress(coinType, coinProps.address)
@@ -22,12 +22,31 @@ export const balance =  (event, context, callback) => {
         })
 }
 
-export const sendCoin = (event,context,callback) => {
+export const sendCoin = (event, context, callback) => {
     const coinType = event.pathParameters.cointype;
+    const receiversWalletAddress = event.pathParameters.walletaddress;
+    const unitsToTransfer = event.pathParameters.amount;
     const coinProps = COIN_MAP[coinType];
-    
+
     //validate input for bad request or not supported coins
-    validateInputs(coinType, callback);
+    validateCoinType(coinType, callback);
+    validateReceiversWalletAddress(receiversWalletAddress);
+
+    bitgo.getWalletByAddress(coinType, coinProps.address)
+        .then((wallet) => {
+            const transactionInfo = {
+                amount: unitsToTransfer,
+                address: receiversWalletAddress,
+                walletPassphrase: process.env.WALLET_PASS_PHRASE
+            }
+            wallet.send(transactionInfo).then((transaction) => {
+                callback(null, formatResponse(STATUS_CODE.OK, transaction));
+            }, (error) => {
+                callback(null, formatResponse(error.status, error.result));
+            })
+        }, (error) => {
+            callback(null, formatResponse(STATUS_CODE.SERVER_ERROR, { error: error }))
+        })
 
 }
 
@@ -42,7 +61,7 @@ const formatResponse = (statusCode, body) => {
     };
 }
 
-function validateInputs(coinType, callback) {
+const validateCoinType = (coinType, callback) => {
     //BAD REQUEST if coin type is not supplied
     !coinType && callback(null, formatResponse(STATUS_CODE.BAD_REQUEST, { message: 'bad request' }));
     //NOT FOUND if coin type is not available
@@ -51,3 +70,7 @@ function validateInputs(coinType, callback) {
     }
 }
 
+const validateReceiversWalletAddress = (walletAddress, callback) => {
+    //BAD REQUEST if coin type is not supplied
+    !walletAddress && callback(null, formatResponse(STATUS_CODE.BAD_REQUEST, { message: 'bad request' }));
+}

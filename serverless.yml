@@ -32,3 +32,10 @@ functions:
       - http:
           path: balance/{cointype}
           method: get
+  sendcoin:
+    handler: api/wallet.sendCoin
+    events:
+      - http:
+          path: sendcoin/{cointype}/{walletaddress}/{amount}
+          method: post
+
