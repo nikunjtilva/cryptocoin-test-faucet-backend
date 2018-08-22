@@ -9,7 +9,7 @@ This project consists of below microservices
 
 ### Demo
 
-A demo version of these services are hosted on AWS - [`https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/balance/tbtc`](https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/balance/tbtc)
+A demo version of these services are hosted on AWS - [`https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/balance/{cointype}`](https://pj24x5tb2a.execute-api.us-east-1.amazonaws.com/dev/balance/tbtc)
 
 ### Requirements
 
