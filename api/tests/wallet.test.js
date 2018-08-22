@@ -131,7 +131,7 @@ describe('Wallet API: ', () => {
             }
             wallet.sendCoin(events, null, callback);
         });
-        it('should throw error with status code 400 if coin type is not provided', async (done) => {
+        it('should throw error with status code 400 if coin type/wallet address/ amount is not provided', async (done) => {
             const events = {
                 pathParameters: {
                 }
@@ -142,6 +142,7 @@ describe('Wallet API: ', () => {
             }
             wallet.sendCoin(events, null, callback);
         });
+
         it('should send requested coins to target wallet', async (done) => {
 
             const transactionInfo = {
@@ -174,7 +175,10 @@ describe('Wallet API: ', () => {
         });
         it('should raise error if coins can not be transfered', async (done) => {
             const error = {
-                message:'unexpected error'
+                status:STATUS_CODE.BAD_REQUEST,
+                result:{
+                    message:'unexpected error'
+                }
             };
 
             const sendMock = jest.fn().mockReturnValue(new Promise((resolve, reject) => {
@@ -193,8 +197,7 @@ describe('Wallet API: ', () => {
                 }
             }
             const callback = (args, response) => {
-                expect(response.body).toEqual(JSON.stringify(error));
-                expect(response.statusCode).toEqual(STATUS_CODE.SERVER_ERROR);
+                expect(response.statusCode).toEqual(STATUS_CODE.BAD_REQUEST);
                 done();
             }
             wallet.sendCoin(events, null, callback);

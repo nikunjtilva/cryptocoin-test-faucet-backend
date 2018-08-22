@@ -1,16 +1,16 @@
 {
   "name": "backend",
-  "version": "1.1.0",
-  "description": "A Node.js starter for the Serverless Framework with async/await and unit test support",
-  "main": "handler.js",
+  "version": "1.0.0",
+  "description": "Bitcoin/Litecoin test faucet backend with bitgo sdk and serverless architecture (AWS Lambda)",
+  "main": "wallet.js",
   "scripts": {
     "test": "jest"
   },
-  "author": "",
+  "author": "Nikunj Tilva",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
+    "url": "https://github.com/nikunjtilva/cryptocoin-test-faucet-backend"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
