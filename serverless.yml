@@ -32,10 +32,12 @@ functions:
       - http:
           path: balance/{cointype}
           method: get
+          cors: true
   sendcoin:
     handler: api/wallet.sendCoin
     events:
       - http:
           path: sendcoin/{cointype}/{walletaddress}/{amount}
           method: post
+          cors: true
 
